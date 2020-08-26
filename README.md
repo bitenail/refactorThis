@@ -15,3 +15,6 @@ Xero Code Challenge
 2. Swagger UI: http://localhost:88/swagger/index.html
 
 # Run locally
+1. Run `dotnet build` at the root directory
+2. Run `dotnet run --project RefactorThisV2`
+3. Swagger UI: http://localhost:88/swagger/index.html
