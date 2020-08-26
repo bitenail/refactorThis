@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+    refactorv2:
+        build:
+            context: .
+            dockerfile: dockerfile
+        environment:
+            - ConnectionStrings:Data Source=App_Data\\products.db
+        image: refactorv2
+        container_name: refactorv2
+        networks:
+            - network
+        ports:
+            - 88:80
+
+networks:
+    network:
+
+volumes:
+    mssql:

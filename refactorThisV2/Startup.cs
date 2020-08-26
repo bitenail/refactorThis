@@ -1,17 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using RefactorThisV2.Persistence;
+using RefactorThisV2.Service.ProductOptions.Commands;
+using RefactorThisV2.Service.ProductOptions.Queries;
+using RefactorThisV2.Service.Products.Commands;
+using RefactorThisV2.Service.Products.Queries;
 
-namespace refactorThisV2
+namespace RefactorThisV2
 {
     public class Startup
     {
@@ -26,6 +28,23 @@ namespace refactorThisV2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddMediatR(typeof(GetProductQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetAllProductsQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetAllProductsByNameQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateProductCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(DeleteProductCommandHandler).GetTypeInfo().Assembly);
+
+            services.AddMediatR(typeof(GetProductOptionsQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetProductOptionQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateProductOptionCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(UpdateProductCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(DeleteProductOptionCommandHandler).GetTypeInfo().Assembly);
+
+            services.AddDbContext<RefactorThisV2DbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,14 +55,17 @@ namespace refactorThisV2
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
         }

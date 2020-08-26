@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Products\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RefactorThisV2.Domain\RefactorThisV2.Domain.csproj" />
+    <ProjectReference Include="..\RefactorThisV2.Persistence\RefactorThisV2.Persistence.csproj" />
+  </ItemGroup>
+</Project>

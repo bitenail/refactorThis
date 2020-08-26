@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RefactorProductApi.Api.Controllers
+namespace RefactorThisV2.Controllers
 {
     public class BaseController : ControllerBase
     {
