@@ -5,8 +5,6 @@ services:
         build:
             context: .
             dockerfile: dockerfile
-        environment:
-            - ConnectionStrings:Data Source=App_Data\\products.db
         image: refactorv2
         container_name: refactorv2
         networks:
